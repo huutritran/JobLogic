@@ -8,23 +8,27 @@ import com.example.joblogic.data.datasources.model.toContactEntities
 import com.example.joblogic.data.datasources.remote.JobLogicRemoteDataSource
 import com.example.joblogic.domain.entities.Contact
 import com.example.joblogic.domain.repositories.ContactRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
 class ContactRepositoryImpl(
+    private val ioDispatcher: CoroutineDispatcher,
     private val jobLogicRemoteDataSource: JobLogicRemoteDataSource
-): ContactRepository {
-    override suspend fun getContactList(): Either<Failure, List<Contact>> {
-        return try {
-            val listContact = jobLogicRemoteDataSource
-                .getContactList()
-                .toContactEntities()
+) : ContactRepository {
+    override suspend fun getContactList(): Either<Failure, List<Contact>> =
+        withContext(ioDispatcher) {
+            return@withContext try {
+                val listContact = jobLogicRemoteDataSource
+                    .getContactList()
+                    .toContactEntities()
 
-            Right(listContact)
-        } catch (e: HttpException) {
-            Left(Failure.ApiFailure(e.code()))
-        } catch (e: IOException) {
-            Left(Failure.NetworkFailure)
+                Right(listContact)
+            } catch (e: HttpException) {
+                Left(Failure.ApiFailure(e.code()))
+            } catch (e: IOException) {
+                Left(Failure.NetworkFailure)
+            }
         }
-    }
 }

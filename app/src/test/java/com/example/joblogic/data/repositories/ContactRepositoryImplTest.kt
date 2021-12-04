@@ -12,6 +12,8 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.ResponseBody
 import org.junit.Before
@@ -20,14 +22,17 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.net.UnknownHostException
 
+@ExperimentalCoroutinesApi
 class ContactRepositoryImplTest {
     private lateinit var remoteDataSource: JobLogicRemoteDataSource
     private lateinit var contactRepository: ContactRepository
+    private lateinit var testDispatcher: TestCoroutineDispatcher
 
     @Before
     fun setUp() {
         remoteDataSource = mockk()
-        contactRepository = ContactRepositoryImpl(remoteDataSource)
+        testDispatcher = TestCoroutineDispatcher()
+        contactRepository = ContactRepositoryImpl(testDispatcher, remoteDataSource)
     }
 
     @Test
