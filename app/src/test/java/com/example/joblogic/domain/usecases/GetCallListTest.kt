@@ -41,15 +41,15 @@ class GetCallListTest {
     }
 
     @Test
-    fun `should return ServerFailure when ContactRepository return ServerFailure`() = runBlockingTest {
+    fun `should return ServerFailure when ContactRepository return ApiFailure`() = runBlockingTest {
         //arrange
-        coEvery { mockContactRepository.getContactList() } returns Left(Failure.ServerFailure)
+        coEvery { mockContactRepository.getContactList() } returns Left(Failure.ApiFailure(400))
 
         //act
         val result = getCallList(NoParams)
 
         //assert
-        result shouldBe Left(Failure.ServerFailure)
+        result shouldBe Left(Failure.ApiFailure(400))
         coVerify { mockContactRepository.getContactList() }
     }
 }
