@@ -7,6 +7,9 @@ object BuildPlugins {
 object Deps {
     val kotlin by lazy { "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}" }
 
+    //Support Typed Functional Programming in Kotlin
+    val arrowCore by lazy { "io.arrow-kt:arrow-core:${Versions.arrow}" }
+
     // Dependency injection
     val hilt by lazy { "com.google.dagger:hilt-android:${Versions.hilt}" }
     val hiltCompiler by lazy { "com.google.dagger:hilt-android-compiler:${Versions.hilt}" }
@@ -33,6 +36,7 @@ object Deps {
     val jUnit by lazy { "junit:junit:${Versions.jUnit}" }
     val mockk by lazy { "io.mockk:mockk:${Versions.mockk}" }
     val mockkCommon by lazy { "io.mockk:mockk-common:${Versions.mockk}" }
+    val coroutinesTest by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutine}" }
     val kotest by lazy { "io.kotest:kotest-assertions-core:${Versions.kotest}" }
     val androidJUnit by lazy { "androidx.test.ext:junit:${Versions.androidJUnit}" }
     val espresso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }

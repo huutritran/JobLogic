@@ -44,6 +44,8 @@ android {
 dependencies {
     implementation(Deps.kotlin)
 
+    implementation(Deps.arrowCore)
+
     implementation(Deps.hilt)
     kapt(Deps.hiltCompiler)
 
@@ -65,6 +67,7 @@ dependencies {
     testImplementation(Deps.jUnit)
     testImplementation(Deps.mockk)
     testImplementation(Deps.mockkCommon)
+    testImplementation(Deps.coroutinesTest)
     testImplementation(Deps.kotest)
     androidTestImplementation(Deps.androidJUnit)
     androidTestImplementation(Deps.espresso)
