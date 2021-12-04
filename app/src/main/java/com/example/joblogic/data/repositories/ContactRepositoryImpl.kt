@@ -12,8 +12,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class ContactRepositoryImpl(
+class ContactRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val jobLogicRemoteDataSource: JobLogicRemoteDataSource
 ) : ContactRepository {

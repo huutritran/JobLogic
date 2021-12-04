@@ -17,6 +17,8 @@ android {
         versionName = ConfigData.versionName
 
         testInstrumentationRunner = ConfigData.testInstrumentationRunner
+
+        buildConfigField("String","BASE_URL","\"https://my-json-server.typicode.com\"")
     }
 
     buildTypes {
