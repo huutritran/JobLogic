@@ -1,7 +1,8 @@
-package com.example.joblogic
+package com.example.joblogic.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.joblogic.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

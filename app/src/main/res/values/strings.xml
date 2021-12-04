@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Joblogic</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="call_list">Call List</string>
+    <string name="buy_list">Buy List</string>
+    <string name="sell_list">Sell List</string>
 </resources>

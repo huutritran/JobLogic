@@ -1,6 +1,7 @@
 object Versions {
     const val gradlePlugin = "7.0.3"
     const val kotlin = "1.6.0"
+    const val navigation = "2.4.0-beta02"
     const val arrow = "1.0.1"
     const val hilt = "2.38.1"
     const val ktx = "1.7.0"

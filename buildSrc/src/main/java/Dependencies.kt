@@ -2,10 +2,15 @@ object BuildPlugins {
     val android by lazy { "com.android.tools.build:gradle:${Versions.gradlePlugin}" }
     val kotlin by lazy { "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}" }
     val hilt by lazy { "com.google.dagger:hilt-android-gradle-plugin:2.38.1" }
+    val navigation by lazy { "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}" }
 }
 
 object Deps {
     val kotlin by lazy { "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}" }
+
+    //Navigation
+    val navigationFragment by lazy { "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}" }
+    val navigationUiKtx by lazy { "androidx.navigation:navigation-ui-ktx:${Versions.navigation}" }
 
     //Support Typed Functional Programming in Kotlin
     val arrowCore by lazy { "io.arrow-kt:arrow-core:${Versions.arrow}" }

@@ -3,6 +3,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-android")
 }
 
 android {
@@ -41,14 +43,22 @@ android {
             jvmTarget = "1.8"
         }
     }
+
+    dataBinding {
+        isEnabled = true
+    }
 }
 
 dependencies {
     implementation(Deps.kotlin)
 
+    implementation(Deps.navigationFragment)
+    implementation(Deps.navigationUiKtx)
+
     implementation(Deps.arrowCore)
 
     implementation(Deps.hilt)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Deps.hiltCompiler)
 
     implementation(Deps.ktx)
