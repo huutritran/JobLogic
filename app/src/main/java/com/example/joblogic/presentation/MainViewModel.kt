@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.joblogic.core.Failure
 import com.example.joblogic.core.NoParams
 import com.example.joblogic.core.SingleLiveEvent
+import com.example.joblogic.domain.usecases.GetBuyList
 import com.example.joblogic.domain.usecases.GetCallList
 import com.example.joblogic.presentation.list.ItemData
 import com.example.joblogic.presentation.list.toItemData
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCallList: GetCallList
+    private val getCallList: GetCallList,
+    private val getBuyList: GetBuyList
 ) : ViewModel() {
     private val _listType = SingleLiveEvent<ListType>()
     val listType: SingleLiveEvent<ListType> = _listType
@@ -43,19 +45,27 @@ class MainViewModel @Inject constructor(
         _listType.observeForever(typeChangeObserver)
     }
 
-    private fun getCallList() = viewModelScope.launch {
+    private fun launchLoading(call: suspend () -> Unit) = viewModelScope.launch {
         _loading.value = true
+        call()
+        _loading.value = false
+    }
+
+    private fun getCallList() = launchLoading {
         getCallList(NoParams).fold(
             { failure -> _error.value = failure },
             { data -> _listData.value = data.map { it.toItemData() } }
-        ).also {
-            _loading.value = false
-        }
+        )
     }
 
     private fun getSellList() {}
 
-    private fun getBuyList() {}
+    private fun getBuyList() = launchLoading {
+        getBuyList(NoParams).fold(
+            { failure -> _error.value = failure },
+            { data -> _listData.value = data.map { it.toItemData() } }
+        )
+    }
 
     fun showCallList() {
         _listType.value = ListType.CALL

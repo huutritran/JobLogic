@@ -4,7 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import arrow.core.Either.Right
 import com.example.joblogic.core.NoParams
+import com.example.joblogic.domain.entities.Amount
 import com.example.joblogic.domain.entities.Contact
+import com.example.joblogic.domain.entities.ProductItem
+import com.example.joblogic.domain.usecases.GetBuyList
 import com.example.joblogic.domain.usecases.GetCallList
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -26,8 +29,9 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MainViewModelTest {
     private lateinit var getCallList: GetCallList
+    private lateinit var getBuyList: GetBuyList
     private lateinit var viewModel: MainViewModel
-    val dispatcher = TestCoroutineDispatcher()
+    private val dispatcher = TestCoroutineDispatcher()
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -35,7 +39,8 @@ class MainViewModelTest {
     @Before
     fun setup() {
         getCallList = mockk()
-        viewModel = MainViewModel(getCallList)
+        getBuyList = mockk()
+        viewModel = MainViewModel(getCallList, getBuyList)
         Dispatchers.setMain(dispatcher)
     }
 
@@ -59,9 +64,13 @@ class MainViewModelTest {
 
     @Test
     fun `should show buy list`() {
+        val dummyList = listOf(ProductItem(1, "dummy", Amount(10), 1, 1))
+        coEvery { getBuyList.invoke(NoParams) } returns Right(dummyList)
+
         assertCallActionCorrectly(ListType.BUY) {
             viewModel.showBuyList()
         }
+        coVerify { getBuyList.invoke(NoParams) }
     }
 
     @Test
@@ -71,7 +80,7 @@ class MainViewModelTest {
         }
     }
 
-    private fun assertCallActionCorrectly( expectedTypeChange: ListType, call:() -> Unit) {
+    private fun assertCallActionCorrectly(expectedTypeChange: ListType, call: () -> Unit) {
         //arrange
         val listTypeObserver = mockk<Observer<ListType>> { every { onChanged(any()) } just Runs }
         viewModel.listType.observeForever(listTypeObserver)

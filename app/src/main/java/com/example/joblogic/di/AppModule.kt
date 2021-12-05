@@ -3,7 +3,9 @@ package com.example.joblogic.di
 import com.example.joblogic.BuildConfig
 import com.example.joblogic.data.datasources.remote.JobLogicRemoteDataSource
 import com.example.joblogic.data.repositories.ContactRepositoryImpl
+import com.example.joblogic.data.repositories.ProductRepositoryImpl
 import com.example.joblogic.domain.repositories.ContactRepository
+import com.example.joblogic.domain.repositories.ProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,5 +49,11 @@ class AppModule {
     @Singleton
     fun provideContactRepository(contactRepositoryImpl: ContactRepositoryImpl): ContactRepository {
         return contactRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(productRepositoryImpl: ProductRepositoryImpl): ProductRepository {
+        return productRepositoryImpl
     }
 }

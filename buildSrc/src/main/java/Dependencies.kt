@@ -6,6 +6,11 @@ object BuildPlugins {
 }
 
 object Deps {
+    // Room Database
+    val roomRuntime by lazy { "androidx.room:room-runtime:${Versions.roomVersion}" }
+    val roomCompiler by lazy { "androidx.room:room-compiler:${Versions.roomVersion}" }
+    val roomKtx by lazy { "androidx.room:room-ktx:${Versions.roomVersion}" }
+
     val kotlin by lazy { "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}" }
 
     //Navigation

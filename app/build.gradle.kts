@@ -50,6 +50,10 @@ android {
 }
 
 dependencies {
+    implementation(Deps.roomRuntime)
+    kapt(Deps.roomCompiler)
+    implementation(Deps.roomKtx)
+
     implementation(Deps.kotlin)
 
     implementation(Deps.navigationFragment)
@@ -58,7 +62,6 @@ dependencies {
     implementation(Deps.arrowCore)
 
     implementation(Deps.hilt)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Deps.hiltCompiler)
 
     implementation(Deps.ktx)
