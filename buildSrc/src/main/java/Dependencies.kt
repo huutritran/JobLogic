@@ -43,6 +43,7 @@ object Deps {
     val mockkCommon by lazy { "io.mockk:mockk-common:${Versions.mockk}" }
     val coroutinesTest by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutine}" }
     val kotest by lazy { "io.kotest:kotest-assertions-core:${Versions.kotest}" }
+    val archCoreTest by lazy { "androidx.arch.core:core-testing:${Versions.archCoreTest}" }
     val androidJUnit by lazy { "androidx.test.ext:junit:${Versions.androidJUnit}" }
     val espresso by lazy { "androidx.test.espresso:espresso-core:${Versions.espresso}" }
 }

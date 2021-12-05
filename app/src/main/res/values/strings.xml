@@ -5,4 +5,8 @@
     <string name="call_list">Call List</string>
     <string name="buy_list">Buy List</string>
     <string name="sell_list">Sell List</string>
+    <string name="name">Name</string>
+    <string name="number">Number</string>
+    <string name="price">Price</string>
+    <string name="quantity">Quantity</string>
 </resources>

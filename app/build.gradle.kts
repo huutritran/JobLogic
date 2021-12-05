@@ -81,6 +81,7 @@ dependencies {
     testImplementation(Deps.mockkCommon)
     testImplementation(Deps.coroutinesTest)
     testImplementation(Deps.kotest)
+    testImplementation(Deps.archCoreTest)
     androidTestImplementation(Deps.androidJUnit)
     androidTestImplementation(Deps.espresso)
 }

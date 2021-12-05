@@ -17,6 +17,7 @@ object Versions {
     const val jUnit = "4.12"
     const val mockk = "1.12.0"
     const val kotest = "4.4.3"
+    const val archCoreTest = "2.1.0"
     const val androidJUnit = "1.1.3"
     const val espresso = "3.4.0"
 }
