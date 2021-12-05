@@ -9,6 +9,8 @@ import com.example.joblogic.domain.entities.Contact
 import com.example.joblogic.domain.entities.ProductItem
 import com.example.joblogic.domain.usecases.GetBuyList
 import com.example.joblogic.domain.usecases.GetCallList
+import com.example.joblogic.domain.usecases.GetSellList
+import com.example.joblogic.domain.usecases.JobLogicUseCase
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -16,6 +18,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifySequence
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -30,6 +33,8 @@ import org.junit.Test
 class MainViewModelTest {
     private lateinit var getCallList: GetCallList
     private lateinit var getBuyList: GetBuyList
+    private lateinit var getSellList: GetSellList
+    private lateinit var jobLogicUseCase: JobLogicUseCase
     private lateinit var viewModel: MainViewModel
     private val dispatcher = TestCoroutineDispatcher()
 
@@ -40,7 +45,9 @@ class MainViewModelTest {
     fun setup() {
         getCallList = mockk()
         getBuyList = mockk()
-        viewModel = MainViewModel(getCallList, getBuyList)
+        getSellList = mockk()
+        jobLogicUseCase = JobLogicUseCase(getCallList, getBuyList, getSellList)
+        viewModel = MainViewModel(jobLogicUseCase)
         Dispatchers.setMain(dispatcher)
     }
 
@@ -75,9 +82,13 @@ class MainViewModelTest {
 
     @Test
     fun `should show sell list`() {
+        val dummyList = listOf(ProductItem(1, "dummy", Amount(10), 1, 1))
+        coEvery { getSellList.invoke(NoParams) } returns Right(dummyList)
+
         assertCallActionCorrectly(ListType.SELL) {
             viewModel.showSellList()
         }
+        coVerify { getSellList.invoke(NoParams) }
     }
 
     private fun assertCallActionCorrectly(expectedTypeChange: ListType, call: () -> Unit) {
@@ -85,12 +96,19 @@ class MainViewModelTest {
         val listTypeObserver = mockk<Observer<ListType>> { every { onChanged(any()) } just Runs }
         viewModel.listType.observeForever(listTypeObserver)
 
+        val loadingObserver = mockk<Observer<Boolean>> { every { onChanged(any()) } just Runs }
+        viewModel.loading.observeForever(loadingObserver)
+
         //act
         call()
 
         //assert
         verify {
             listTypeObserver.onChanged(expectedTypeChange)
+        }
+        verifySequence {
+            loadingObserver.onChanged(true)
+            loadingObserver.onChanged(false)
         }
     }
 }

@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.joblogic.R
 import com.example.joblogic.databinding.FragmentListBinding
+import com.example.joblogic.presentation.ListType
 import com.example.joblogic.presentation.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.UnsupportedOperationException
 
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list) {
@@ -35,9 +37,19 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolBar()
         setupBackPress()
         setupRecyclerView()
         subscribeData()
+    }
+
+    private fun setupToolBar() {
+        binding.tvTitle.text = when (viewModel.listType.value) {
+            ListType.CALL -> getString(R.string.call_list)
+            ListType.BUY -> getString(R.string.buy_list)
+            ListType.SELL -> getString(R.string.sell_list)
+            else -> throw UnsupportedOperationException("Not supported")
+        }
     }
 
     private fun setupBackPress() {

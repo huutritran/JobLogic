@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.joblogic.core.Failure
 import com.example.joblogic.core.NoParams
 import com.example.joblogic.core.SingleLiveEvent
-import com.example.joblogic.domain.usecases.GetBuyList
-import com.example.joblogic.domain.usecases.GetCallList
-import com.example.joblogic.domain.usecases.GetSellList
+import com.example.joblogic.domain.usecases.JobLogicUseCase
 import com.example.joblogic.presentation.list.ItemData
 import com.example.joblogic.presentation.list.toItemData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,9 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCallList: GetCallList,
-    private val getBuyList: GetBuyList,
-    private val getSellList: GetSellList
+    private val jobLogicUseCase: JobLogicUseCase
 ) : ViewModel() {
     private val _listType = SingleLiveEvent<ListType>()
     val listType: SingleLiveEvent<ListType> = _listType
@@ -54,24 +50,25 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getCallList() = launchLoading {
-        getCallList(NoParams).fold(
-            { failure -> _error.value = failure },
-            { data -> _listData.value = data.map { it.toItemData() } }
-        )
+        jobLogicUseCase.getCallList(NoParams).fold(
+            this::onFailure
+        ) { data -> _listData.value = data.map { it.toItemData() } }
     }
 
     private fun getSellList() = launchLoading {
-        getSellList(NoParams).fold(
-            { failure -> _error.value = failure },
-            { data -> _listData.value = data.map { it.toItemData() } }
-        )
+        jobLogicUseCase.getSellList(NoParams).fold(
+            this::onFailure
+        ) { data -> _listData.value = data.map { it.toItemData() } }
     }
 
     private fun getBuyList() = launchLoading {
-        getBuyList(NoParams).fold(
-            { failure -> _error.value = failure },
-            { data -> _listData.value = data.map { it.toItemData() } }
-        )
+        jobLogicUseCase.getBuyList(NoParams).fold(
+            this::onFailure
+        ) { data -> _listData.value = data.map { it.toItemData() } }
+    }
+
+    private fun onFailure(failure: Failure) {
+        _error.value = failure
     }
 
     fun showCallList() {

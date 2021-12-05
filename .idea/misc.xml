@@ -6,9 +6,10 @@
         <entry key="../../../../../layout/custom_preview.xml" value="0.27708333333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.13645833333333332" />
-        <entry key="app/src/main/res/layout/fragment_list.xml" value="0.15052083333333333" />
+        <entry key="app/src/main/res/layout/fragment_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/layout/item_product.xml" value="0.26197916666666665" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.20989583333333334" />
       </map>
     </option>
   </component>

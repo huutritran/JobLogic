@@ -9,6 +9,10 @@ import com.example.joblogic.data.repositories.ContactRepositoryImpl
 import com.example.joblogic.data.repositories.ProductRepositoryImpl
 import com.example.joblogic.domain.repositories.ContactRepository
 import com.example.joblogic.domain.repositories.ProductRepository
+import com.example.joblogic.domain.usecases.GetBuyList
+import com.example.joblogic.domain.usecases.GetCallList
+import com.example.joblogic.domain.usecases.GetSellList
+import com.example.joblogic.domain.usecases.JobLogicUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,6 +64,16 @@ class AppModule {
     @Singleton
     fun provideContactRepository(contactRepositoryImpl: ContactRepositoryImpl): ContactRepository {
         return contactRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideJobLogicUseCase(ContactRepository: ContactRepository, productRepository: ProductRepository): JobLogicUseCase {
+        return JobLogicUseCase(
+            getCallList = GetCallList(ContactRepository),
+            getBuyList = GetBuyList(productRepository),
+            getSellList = GetSellList(productRepository)
+        )
     }
 
     @Provides
