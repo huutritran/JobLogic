@@ -50,6 +50,10 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             ListType.SELL -> getString(R.string.sell_list)
             else -> throw UnsupportedOperationException("Not supported")
         }
+
+        binding.toolbarLayout.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupBackPress() {
