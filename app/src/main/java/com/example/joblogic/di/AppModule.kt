@@ -1,6 +1,9 @@
 package com.example.joblogic.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.joblogic.BuildConfig
+import com.example.joblogic.data.datasources.local.AppDatabase
 import com.example.joblogic.data.datasources.remote.JobLogicRemoteDataSource
 import com.example.joblogic.data.repositories.ContactRepositoryImpl
 import com.example.joblogic.data.repositories.ProductRepositoryImpl
@@ -9,6 +12,7 @@ import com.example.joblogic.domain.repositories.ProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +45,13 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideNoteDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return Room.databaseBuilder(appContext, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
+            .build()
+    }
+
+    @Provides
+    @Singleton
     fun provideJobLogicRemoteDataSource(retrofit: Retrofit): JobLogicRemoteDataSource {
         return retrofit.create(JobLogicRemoteDataSource::class.java)
     }
@@ -53,7 +64,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideProductRepository(productRepositoryImpl: ProductRepositoryImpl): ProductRepository {
-        return productRepositoryImpl
+    fun provideProductRepository(
+        @IODispatcher ioDispatcher: CoroutineDispatcher,
+        appDatabase: AppDatabase,
+        jobLogicRemoteDataSource: JobLogicRemoteDataSource
+    ): ProductRepository {
+        return ProductRepositoryImpl(
+            ioDispatcher,
+            jobLogicRemoteDataSource,
+            appDatabase.productDAO()
+        )
     }
 }

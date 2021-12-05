@@ -10,6 +10,7 @@ import com.example.joblogic.core.NoParams
 import com.example.joblogic.core.SingleLiveEvent
 import com.example.joblogic.domain.usecases.GetBuyList
 import com.example.joblogic.domain.usecases.GetCallList
+import com.example.joblogic.domain.usecases.GetSellList
 import com.example.joblogic.presentation.list.ItemData
 import com.example.joblogic.presentation.list.toItemData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCallList: GetCallList,
-    private val getBuyList: GetBuyList
+    private val getBuyList: GetBuyList,
+    private val getSellList: GetSellList
 ) : ViewModel() {
     private val _listType = SingleLiveEvent<ListType>()
     val listType: SingleLiveEvent<ListType> = _listType
@@ -58,7 +60,12 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    private fun getSellList() {}
+    private fun getSellList() = launchLoading {
+        getSellList(NoParams).fold(
+            { failure -> _error.value = failure },
+            { data -> _listData.value = data.map { it.toItemData() } }
+        )
+    }
 
     private fun getBuyList() = launchLoading {
         getBuyList(NoParams).fold(
